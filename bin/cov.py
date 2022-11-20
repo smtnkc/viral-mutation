@@ -22,7 +22,7 @@ def parse_args():
                         help='Model checkpoint')
     parser.add_argument('--train', action='store_true',
                         help='Train model')
-    parser.add_argument('--train-split', action='store_true',
+    parser.add_argument('--train_split', action='store_true',
                         help='Train model on portion of data')
     parser.add_argument('--test', action='store_true',
                         help='Test model')
@@ -168,13 +168,14 @@ def setup(args):
                'data/cov/gisaid.fasta' ]
 
     seqs = process(fnames)
-
+    #seqs = dict(list(seqs.items())[:100])
     seq_len = max([ len(seq) for seq in seqs ]) + 2
     vocab_size = len(AAs) + 2
 
     model = get_model(args, seq_len, vocab_size,
                       inference_batch_size=600)
 
+    tprint('{} unique sequences with the max length of {}.'.format(len(seqs), seq_len))
     return model, seqs
 
 def interpret_clusters(adata):
@@ -195,7 +196,7 @@ def plot_umap(adata, categories, namespace='cov'):
                    save='_{}_{}.png'.format(namespace, category))
 
 def analyze_embedding(args, model, seqs, vocabulary):
-    seqs = embed_seqs(args, model, seqs, vocabulary, use_cache=True)
+    seqs = embed_seqs(args, model, seqs, vocabulary, use_cache=False)
 
     X, obs = [], {}
     obs['n_seq'] = []

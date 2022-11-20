@@ -73,7 +73,7 @@ class LanguageModel(object):
             X_cat, lengths,
             self.seq_len_, self.vocab_size_, self.verbose_,
         )[0]
-
+        tprint('X is {} Mb'.format(round((X[0].nbytes + X[1].nbytes) / (1024*1024))))
         # For now, each character in each sequence becomes a sample.
         n_samples = sum(lengths)
         if type(X) == list:
@@ -91,9 +91,15 @@ class LanguageModel(object):
         # Manage batching to avoid overwhelming GPU memory.
         X_embed_cat = []
         n_batches = math.ceil(n_samples / self.inference_batch_size_)
+
+        tprint('n_samples: {}'.format(n_samples))
+        tprint('inference_batch_size: {}'.format(self.inference_batch_size_))
+        tprint('n_batches: {}'.format(n_batches))
+
         if self.verbose_:
             tprint('Embedding...')
             prog_bar = tf.keras.utils.Progbar(n_batches)
+        X_embed_cat_nbytes = 0
         for batchi in range(n_batches):
             start = batchi * self.inference_batch_size_
             end = min((batchi + 1) * self.inference_batch_size_, n_samples)
@@ -101,9 +107,15 @@ class LanguageModel(object):
                 X_batch = [ X_i[start:end] for X_i in X ]
             else:
                 X_batch = X[start:end]
-            X_embed_cat.append(hidden(X_batch))
+            X_batch_emb = hidden(X_batch)
+            X_embed_cat.append(X_batch_emb)
+            X_embed_cat_nbytes += X_batch_emb.nbytes
             if self.verbose_:
                 prog_bar.add(1)
+
+        tprint('X_embed_cat is {} Mb'.format(round(X_embed_cat_nbytes / (1024*1024))))
+        del X # free some space in RAM
+        tprint('deleted X to free some space in the memory...')
         X_embed_cat = np.concatenate(X_embed_cat)
         if self.verbose_:
             tprint('Done embedding.')
@@ -375,6 +387,9 @@ class BiLSTMLanguageModel(LanguageModel):
             X_cat[start:end].flatten()
             for start, end in iterate_lengths(lengths, seq_len)
         ]
+
+        # X_seqs = X_seqs[100:105]
+
         X_pre = [
             X_seq[:i] for X_seq in X_seqs for i in range(len(X_seq))
         ]
@@ -386,19 +401,19 @@ class BiLSTMLanguageModel(LanguageModel):
         ])
 
         if verbose > 1:
-            tprint('Padding {} splitted...'.format(len(X_pre)))
+            tprint('Padding {} splitted pre seqs...'.format(len(X_pre)))
         X_pre = pad_sequences(
             X_pre, maxlen=seq_len - 1,
-            dtype='int32', padding='pre', truncating='pre', value=0
+            dtype='int8', padding='pre', truncating='pre', value=0
         )
         if verbose > 1:
-            tprint('Padding {} splitted again...'.format(len(X_pre)))
+            tprint('Padding {} splitted post seqs...'.format(len(X_post)))
         X_post = pad_sequences(
             X_post, maxlen=seq_len - 1,
-            dtype='int32', padding='post', truncating='post', value=0
+            dtype='int8', padding='post', truncating='post', value=0
         )
         if verbose > 1:
-            tprint('Flipping...')
+            tprint('Flipping post seqs...')
         X_post = np.flip(X_post, 1)
         X = [ X_pre, X_post ]
 

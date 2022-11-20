@@ -44,7 +44,7 @@ def get_model(args, seq_len, vocab_size,
             hidden_dim=args.dim,
             n_hidden=2,
             n_epochs=args.n_epochs,
-            batch_size=batch_size,
+            batch_size=args.batch_size,
             inference_batch_size=inference_batch_size,
             cache_dir='target/{}'.format(args.namespace),
             seed=args.seed,
@@ -181,7 +181,7 @@ def batch_train(args, model, seqs, vocabulary, batch_size=5000,
               '{}-01.hdf5'.format(fname_prefix))
 
 def embed_seqs(args, model, seqs, vocabulary,
-               use_cache=False, verbose=True, namespace=None):
+               use_cache=False, verbose=2, namespace=None):
     if namespace is None:
         namespace = args.namespace
 

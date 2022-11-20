@@ -22,7 +22,7 @@ def parse_args():
                         help='Model checkpoint')
     parser.add_argument('--train', action='store_true',
                         help='Train model')
-    parser.add_argument('--train-split', action='store_true',
+    parser.add_argument('--train_split', action='store_true',
                         help='Train model on portion of data')
     parser.add_argument('--test', action='store_true',
                         help='Test model')

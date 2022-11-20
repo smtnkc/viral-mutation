@@ -16,6 +16,7 @@ import seaborn as sns
 import sys
 import time
 import warnings
+np.set_printoptions(threshold=10000)
 
 from Bio import BiopythonWarning
 warnings.simplefilter('ignore', BiopythonWarning)
