@@ -16,3 +16,6 @@ dist/
 plots*
 target*
 temp*
+
+.DS_Store
+slurm/

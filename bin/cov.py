@@ -1,4 +1,5 @@
 from mutation import *
+import pickle
 
 np.random.seed(1)
 random.seed(1)
@@ -12,9 +13,9 @@ def parse_args():
                         help='Model namespace')
     parser.add_argument('--dim', type=int, default=512,
                         help='Embedding dimension')
-    parser.add_argument('--batch-size', type=int, default=250,
+    parser.add_argument('--batch-size', type=int, default=100,
                         help='Training minibatch size')
-    parser.add_argument('--n-epochs', type=int, default=20,
+    parser.add_argument('--n-epochs', type=int, default=4,
                         help='Number of training epochs')
     parser.add_argument('--seed', type=int, default=1,
                         help='Random seed')
@@ -173,7 +174,7 @@ def setup(args):
     vocab_size = len(AAs) + 2
 
     model = get_model(args, seq_len, vocab_size,
-                      inference_batch_size=600)
+                      inference_batch_size=100)
 
     tprint('{} unique sequences with the max length of {}.'.format(len(seqs), seq_len))
     return model, seqs
@@ -196,7 +197,17 @@ def plot_umap(adata, categories, namespace='cov'):
                    save='_{}_{}.png'.format(namespace, category))
 
 def analyze_embedding(args, model, seqs, vocabulary):
-    seqs = embed_seqs(args, model, seqs, vocabulary, use_cache=False)
+
+    if os.path.isfile('embed_seq.pickle'):
+        tprint('Loading embed_seqs.pickle...')
+        with open('embed_seqs.pickle', 'rb') as handle:
+            seqs = pickle.load(handle)
+    else:
+        seqs = embed_seqs(args, model, seqs, vocabulary, use_cache=False)
+        tprint('Saving embed_seq as pickle file...')
+        with open('embed_seqs.pickle', 'wb') as handle:
+            pickle.dump(seqs, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        tprint('Successfully saved embed_seq.pickle')
 
     X, obs = [], {}
     obs['n_seq'] = []
@@ -442,7 +453,7 @@ if __name__ == '__main__':
         tprint(model.model_.summary())
 
     if args.train:
-        batch_train(args, model, seqs, vocabulary, batch_size=1000)
+        batch_train(args, model, seqs, vocabulary, batch_size=600)
 
     if args.train_split or args.test:
         train_test(args, model, seqs, vocabulary, split_seqs)
