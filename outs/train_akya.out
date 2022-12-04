@@ -96,4 +96,3 @@ coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidt
 7860/7860 [==============================] - 7615s 968ms/step - loss: 0.1625 - accuracy: 0.9595
 7862/7862 [==============================] - 7625s 969ms/step - loss: 0.1861 - accuracy: 0.9536
 7448/7448 [==============================] - 7208s 967ms/step - loss: 0.1500 - accuracy: 0.9628
-48572/54641 [=========================>....] - ETA: 1:37:47 - loss: 0.1698 - accuracy: 0.9572slurmstepd: error: *** JOB 441318 ON akya16 CANCELLED AT 2022-12-03T23:39:25 DUE TO TIME LIMIT ***
