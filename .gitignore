@@ -1,11 +1,4 @@
 *.egg-info
-*.log
-*.log.*
-*.pdf
-*.png
-*.pyc
-*.svg
-*.txt
 *~
 .#*
 R/*
@@ -13,9 +6,6 @@ ZIFA*
 build/
 data
 dist/
-plots*
-target*
 temp*
-
 .DS_Store
 slurm/

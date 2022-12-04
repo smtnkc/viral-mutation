@@ -1,0 +1,176 @@
+2022-11-28 23:26:00.517457: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-11-28 23:26:08.209220: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2022-11-28 23:26:08.212228: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2022-11-28 23:26:08.266053: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:3b:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2022-11-28 23:26:08.266727: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:d8:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2022-11-28 23:26:08.267674: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-11-28 23:26:08.612597: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-11-28 23:26:08.612864: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-11-28 23:26:08.649333: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2022-11-28 23:26:08.660085: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2022-11-28 23:26:08.708752: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2022-11-28 23:26:08.756266: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2022-11-28 23:26:08.763512: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2022-11-28 23:26:08.771349: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0, 1
+2022-11-28 23:26:08.774024: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-11-28 23:26:08.784159: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2022-11-28 23:26:09.047741: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:3b:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2022-11-28 23:26:09.048349: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:d8:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2022-11-28 23:26:09.048415: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-11-28 23:26:09.048442: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-11-28 23:26:09.048457: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-11-28 23:26:09.048471: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2022-11-28 23:26:09.048485: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2022-11-28 23:26:09.048499: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2022-11-28 23:26:09.048529: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2022-11-28 23:26:09.048544: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2022-11-28 23:26:09.050444: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0, 1
+2022-11-28 23:26:09.050494: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-11-28 23:26:10.258184: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2022-11-28 23:26:10.258279: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      0 1 
+2022-11-28 23:26:10.258291: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 0:   N Y 
+2022-11-28 23:26:10.258300: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 1:   Y N 
+2022-11-28 23:26:10.262554: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14957 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:3b:00.0, compute capability: 6.0)
+2022-11-28 23:26:10.264581: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 14957 MB memory) -> physical GPU (device: 1, name: Tesla P100-PCIE-16GB, pci bus id: 0000:d8:00.0, compute capability: 6.0)
+2022-11-28 23:26:11.267875 | 4172 unique sequences with the max length of 1584.
+2022-11-28 23:26:11.356380 | Model summary:
+Model: "model"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            [(None, 1583)]       0                                            
+__________________________________________________________________________________________________
+input_2 (InputLayer)            [(None, 1583)]       0                                            
+__________________________________________________________________________________________________
+embedding (Embedding)           (None, 1583, 20)     560         input_1[0][0]                    
+                                                                 input_2[0][0]                    
+__________________________________________________________________________________________________
+lstm (LSTM)                     (None, 1583, 512)    1091584     embedding[0][0]                  
+                                                                 embedding[1][0]                  
+__________________________________________________________________________________________________
+lstm_1 (LSTM)                   (None, 512)          2099200     lstm[0][0]                       
+                                                                 lstm[1][0]                       
+__________________________________________________________________________________________________
+embed_layer (Concatenate)       (None, 1024)         0           lstm_1[0][0]                     
+                                                                 lstm_1[1][0]                     
+__________________________________________________________________________________________________
+dense (Dense)                   (None, 28)           28700       embed_layer[0][0]                
+__________________________________________________________________________________________________
+activation (Activation)         (None, 28)           0           dense[0][0]                      
+==================================================================================================
+Total params: 3,220,044
+Trainable params: 3,220,044
+Non-trainable params: 0
+__________________________________________________________________________________________________
+2022-11-28 23:26:11.357314 | None
+2022-11-28 23:26:11.403433 | Baum et al. 2020...
+2022-11-28 23:26:12.346160: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2022-11-28 23:26:12.356514: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2400000000 Hz
+2022-11-28 23:26:13.401276: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-11-28 23:26:15.680871: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-11-28 23:26:15.762535: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2022-11-28 23:26:42.821098 | X is 4 Mb
+2022-11-28 23:26:42.823997 | n_samples: 1275
+2022-11-28 23:26:42.824035 | inference_batch_size: 100
+2022-11-28 23:26:42.824047 | n_batches: 13
+2022-11-28 23:26:50.288611 | X_embed_cat is 5 Mb
+2022-11-28 23:26:50.288709 | deleted X to free some space in the memory...
+2022-11-28 23:27:31.024340 | X is 19248 Mb
+2022-11-28 23:27:31.029501 | n_samples: 6375000
+2022-11-28 23:27:31.029539 | inference_batch_size: 100
+2022-11-28 23:27:31.029551 | n_batches: 63750
+2022-11-29 09:43:29.340274 | X_embed_cat is 24902 Mb
+2022-11-29 09:43:29.431506 | deleted X to free some space in the memory...
+2022-11-29 09:44:56.623722 | X is 19248 Mb
+2022-11-29 09:44:56.857735 | n_samples: 6375000
+2022-11-29 09:44:56.857862 | inference_batch_size: 100
+2022-11-29 09:44:56.857908 | n_batches: 63750
+2022-11-29 20:00:54.419497 | X_embed_cat is 24902 Mb
+2022-11-29 20:00:54.456507 | deleted X to free some space in the memory...
+2022-11-29 20:02:23.883313 | X is 19248 Mb
+2022-11-29 20:02:24.169221 | n_samples: 6375000
+2022-11-29 20:02:24.169337 | inference_batch_size: 100
+2022-11-29 20:02:24.169379 | n_batches: 63750
+2022-11-30 06:18:31.462271 | X_embed_cat is 24902 Mb
+2022-11-30 06:18:31.515605 | deleted X to free some space in the memory...
+2022-11-30 06:19:58.032320 | X is 19248 Mb
+2022-11-30 06:19:58.346492 | n_samples: 6375000
+2022-11-30 06:19:58.346616 | inference_batch_size: 100
+2022-11-30 06:19:58.346661 | n_batches: 63750
+2022-11-30 16:35:53.297089 | X_embed_cat is 24902 Mb
+2022-11-30 16:35:53.489890 | deleted X to free some space in the memory...
+2022-11-30 16:37:20.765895 | X is 19248 Mb
+2022-11-30 16:37:21.204842 | n_samples: 6375000
+2022-11-30 16:37:21.204946 | inference_batch_size: 100
+2022-11-30 16:37:21.204988 | n_batches: 63750
+2022-12-01 02:53:11.010701 | X_embed_cat is 24902 Mb
+2022-12-01 02:53:11.188875 | deleted X to free some space in the memory...
+2022-12-01 02:54:37.856602 | X is 19248 Mb
+2022-12-01 02:54:38.305244 | n_samples: 6375000
+2022-12-01 02:54:38.305366 | inference_batch_size: 100
+2022-12-01 02:54:38.305410 | n_batches: 63750
+2022-12-01 13:10:28.054384 | X_embed_cat is 24902 Mb
+2022-12-01 13:10:28.086739 | deleted X to free some space in the memory...
+2022-12-01 13:11:17.415261 | X is 2125 Mb
+2022-12-01 13:11:17.515318 | n_samples: 703800
+2022-12-01 13:11:17.515415 | inference_batch_size: 100
+2022-12-01 13:11:17.515455 | n_batches: 7038
+2022-12-01 14:19:16.454805 | X_embed_cat is 2749 Mb
+2022-12-01 14:19:16.470341 | deleted X to free some space in the memory...
+Number of escape seqs: 19 / 19
+Mean rank: 3746.842105263158 / 24187
+Median rank: 3670.0 / 24187
+Min rank: 125.0 / 24187
+Max rank: 7804.5 / 24187
+Rank stdev: 2552.057586034781 / 24187
+Escape semantics, beta = 1.0 [cov]
+AUC (CSCS): 0.8451005651143612, P = 0.0
+AUC (semantic change only): 0.6372681714622688
+AUC (grammaticality only): 0.7964554686836992
+-6.262 (mean log prob), -4.558 (mean log prob escape), 7.659e-06 (p-value)
+3671 (mean log change), 3924 (mean log change escape), 0.03828 (p-value)
+2022-12-03 13:53:34.554409 | Greaney et al. 2020...
+2022-12-03 13:53:36.242774: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2022-12-03 13:53:36.244406: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2400000000 Hz
+2022-12-03 13:53:37.115563: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-12-03 13:53:38.920152: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-12-03 13:53:39.039526: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2022-12-03 13:54:04.809419 | X is 4 Mb
+2022-12-03 13:54:04.813433 | n_samples: 1275
+2022-12-03 13:54:04.813470 | inference_batch_size: 100
+2022-12-03 13:54:04.813481 | n_batches: 13
+2022-12-03 13:54:12.207362 | X_embed_cat is 5 Mb
+2022-12-03 13:54:12.207492 | deleted X to free some space in the memory...
+2022-12-03 13:54:52.848475 | X is 19248 Mb
+2022-12-03 13:54:52.853064 | n_samples: 6375000
+2022-12-03 13:54:52.853105 | inference_batch_size: 100
+2022-12-03 13:54:52.853117 | n_batches: 63750
+2022-12-04 00:09:32.849635 | X_embed_cat is 24902 Mb
+2022-12-04 00:09:32.939479 | deleted X to free some space in the memory...
+2022-12-04 00:10:24.416362 | X is 1355 Mb
+2022-12-04 00:10:24.831637 | n_samples: 448800
+2022-12-04 00:10:24.831768 | inference_batch_size: 100
+2022-12-04 00:10:24.831815 | n_batches: 4488
+2022-12-04 00:53:39.495271 | X_embed_cat is 1753 Mb
+2022-12-04 00:53:39.495416 | deleted X to free some space in the memory...
+Number of escape seqs: 181 / 181
+Mean rank: 1025.1381215469614 / 2366
+Median rank: 865.0 / 2366
+Min rank: 5.0 / 2366
+Max rank: 2366.0 / 2366
+Rank stdev: 735.9591968893208 / 2366
+Escape semantics, beta = 1.0 [cov2rbd]
+AUC (CSCS): 0.566859935644466, P = 0.0002
+AUC (semantic change only): 0.5909932608827636
+AUC (grammaticality only): 0.4916695077128566
+-5.81 (mean log prob), -5.894 (mean log prob escape), 0.7084 (p-value)
+3436 (mean log change), 3678 (mean log change escape), 4.381e-05 (p-value)

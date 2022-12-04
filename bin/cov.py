@@ -198,17 +198,7 @@ def plot_umap(adata, categories, namespace='cov'):
 
 def analyze_embedding(args, model, seqs, vocabulary):
 
-    if os.path.isfile('embed_seqs.pickle'):
-        tprint('Loading embed_seqs.pickle...')
-        with open('embed_seqs.pickle', 'rb') as handle:
-            seqs = pickle.load(handle)
-        tprint('Successfully loaded embed_seqs')
-    else:
-        seqs = embed_seqs(args, model, seqs, vocabulary, use_cache=False)
-        tprint('Saving embed_seqs as pickle file...')
-        with open('embed_seqs.pickle', 'wb') as handle:
-            pickle.dump(seqs, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        tprint('Successfully saved embed_seqs.pickle')
+    seqs = embed_seqs(args, model, seqs, vocabulary, use_cache=True)
 
     X, obs = [], {}
     obs['n_seq'] = []

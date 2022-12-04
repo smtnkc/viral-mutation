@@ -181,7 +181,7 @@ def batch_train(args, model, seqs, vocabulary, batch_size=5000,
               '{}-01.hdf5'.format(fname_prefix))
 
 def embed_seqs(args, model, seqs, vocabulary,
-               use_cache=False, verbose=2, namespace=None):
+               use_cache=True, verbose=2, namespace=None):
     if namespace is None:
         namespace = args.namespace
 

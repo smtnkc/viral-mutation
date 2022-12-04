@@ -107,6 +107,8 @@ python bin/cov.py bilstm --train --test \
     > cov_train.log 2>&1
 ```
 
+:warning: Training takes **~15 hours per epoch** on an [akya-cuda](https://docs.truba.gov.tr/TRUBA/kullanici-el-kitabi/hesaplamakumeleri.html#akya-cuda) node (4 x 16Gb GPU).
+
 #### Omicron Spike experiments
 
 Evaluating the Coronaviridae language model on major SARS-CoV-2 Spike variants, including Omicron, as well as on SARS-CoV-1 Spike, can be done with the commands
