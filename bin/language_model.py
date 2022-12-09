@@ -326,7 +326,7 @@ class BiLSTMLanguageModel(LanguageModel):
             dff=512,
             n_epochs=1,
             batch_size=1000,
-            inference_batch_size=1500,
+            inference_batch_size=1000,
             cache_dir='.',
             model_name='bilstm',
             seed=None,
@@ -387,8 +387,6 @@ class BiLSTMLanguageModel(LanguageModel):
             X_cat[start:end].flatten()
             for start, end in iterate_lengths(lengths, seq_len)
         ]
-
-        # X_seqs = X_seqs[100:105]
 
         X_pre = [
             X_seq[:i] for X_seq in X_seqs for i in range(len(X_seq))

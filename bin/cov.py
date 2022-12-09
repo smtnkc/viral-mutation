@@ -163,6 +163,18 @@ def split_seqs(seqs, split_method='random'):
 
     return train_seqs, test_seqs
 
+def sample_seqs(seqs):
+    sample_seqs = {}
+
+    tprint('Sampling seqs...')
+    for idx, seq in enumerate(seqs):
+        if idx % 100 == 0:
+            sample_seqs[seq] = seqs[seq]
+
+    tprint('{} seqs are sampled.'.format(len(sample_seqs)))
+
+    return sample_seqs
+
 def setup(args):
     fnames = [ 'data/cov/sars_cov2_seqs.fa',
                'data/cov/viprbrc_db.fasta',
@@ -435,6 +447,7 @@ if __name__ == '__main__':
     vocabulary = { aa: idx + 1 for idx, aa in enumerate(sorted(AAs)) }
 
     model, seqs = setup(args)
+    # seqs = sample_seqs(seqs) # random sampling 1% of the dataset
 
     if 'esm' in args.model_name:
         args.checkpoint = args.model_name
