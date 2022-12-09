@@ -95,4 +95,11 @@ ________________________________________________________________________________
 2022-12-04 19:12:54.012435: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
 2022-12-04 19:12:54.333424: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
 2022-12-04 19:12:54.396998: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
-48572/54641 [=========================>....] - ETA: 1:37:47 - loss: 0.1698 - accuracy: 0.9572slurmstepd: error: *** JOB 441318 ON akya16 CANCELLED AT 2022-12-03T23:39:25 DUE TO TIME LIMIT ***
+43698/43698 [==============================] - 14888s 341ms/step - loss: 0.1342 - accuracy: 0.9658
+2022-12-04 23:21:00.905200 | Metric loss: 0.16162526607513428
+2022-12-04 23:21:00.913182 | Metric accuracy: 0.9587727785110474
+2022-12-04 23:21:00.948584 | Model bilstm, train cross entropy: 0.16162526607513428
+10943/10943 [==============================] - 3745s 342ms/step - loss: 0.1290 - accuracy: 0.9674
+2022-12-05 00:23:40.090186 | Metric loss: 0.17674079537391663
+2022-12-05 00:23:40.090325 | Metric accuracy: 0.9555521607398987
+2022-12-05 00:23:40.101461 | Model bilstm, test cross entropy: 0.17674079537391663

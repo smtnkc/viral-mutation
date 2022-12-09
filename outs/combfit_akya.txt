@@ -1,0 +1,137 @@
+2022-12-04 20:46:15.123475: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-12-04 20:46:54.542098: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2022-12-04 20:46:54.600880: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2022-12-04 20:46:54.809149: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties:
+pciBusID: 0000:61:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-12-04 20:46:54.811109: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties:
+pciBusID: 0000:62:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-12-04 20:46:54.812989: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 2 with properties:
+pciBusID: 0000:89:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-12-04 20:46:54.814790: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 3 with properties:
+pciBusID: 0000:8a:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-12-04 20:46:54.816207: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-12-04 20:46:55.446993: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-12-04 20:46:55.447213: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-12-04 20:46:55.647842: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2022-12-04 20:46:55.879810: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2022-12-04 20:46:56.092900: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2022-12-04 20:46:56.469211: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2022-12-04 20:46:56.533104: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2022-12-04 20:46:56.561060: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0, 1, 2, 3
+2022-12-04 20:46:56.596728: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-12-04 20:46:56.601013: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2022-12-04 20:46:57.025888: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties:
+pciBusID: 0000:61:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-12-04 20:46:57.026754: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties:
+pciBusID: 0000:62:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-12-04 20:46:57.027470: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 2 with properties:
+pciBusID: 0000:89:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-12-04 20:46:57.028182: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 3 with properties:
+pciBusID: 0000:8a:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-12-04 20:46:57.028256: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-12-04 20:46:57.028282: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-12-04 20:46:57.028297: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-12-04 20:46:57.028313: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2022-12-04 20:46:57.028328: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2022-12-04 20:46:57.028342: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2022-12-04 20:46:57.028356: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2022-12-04 20:46:57.028371: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2022-12-04 20:46:57.033342: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0, 1, 2, 3
+2022-12-04 20:46:57.033402: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-12-04 20:47:00.413877: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2022-12-04 20:47:00.413988: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      0 1 2 3
+2022-12-04 20:47:00.414002: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 0:   N Y Y Y
+2022-12-04 20:47:00.414011: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 1:   Y N Y Y
+2022-12-04 20:47:00.414020: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 2:   Y Y N Y
+2022-12-04 20:47:00.414028: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 3:   Y Y Y N
+2022-12-04 20:47:00.438127: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14759 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-16GB, pci bus id: 0000:61:00.0, compute capability: 7.0)
+2022-12-04 20:47:00.442874: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 14759 MB memory) -> physical GPU (device: 1, name: Tesla V100-SXM2-16GB, pci bus id: 0000:62:00.0, compute capability: 7.0)
+2022-12-04 20:47:00.445287: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:2 with 14759 MB memory) -> physical GPU (device: 2, name: Tesla V100-SXM2-16GB, pci bus id: 0000:89:00.0, compute capability: 7.0)
+2022-12-04 20:47:00.447018: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:3 with 14759 MB memory) -> physical GPU (device: 3, name: Tesla V100-SXM2-16GB, pci bus id: 0000:8a:00.0, compute capability: 7.0)
+2022-12-04 20:47:02.185491 | 4172 unique sequences with the max length of 1584.
+2022-12-04 20:47:02.433750 | Model summary:
+Model: "model"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+input_1 (InputLayer)            [(None, 1583)]       0
+__________________________________________________________________________________________________
+input_2 (InputLayer)            [(None, 1583)]       0
+__________________________________________________________________________________________________
+embedding (Embedding)           (None, 1583, 20)     560         input_1[0][0]
+                                                                 input_2[0][0]
+__________________________________________________________________________________________________
+lstm (LSTM)                     (None, 1583, 512)    1091584     embedding[0][0]
+                                                                 embedding[1][0]
+__________________________________________________________________________________________________
+lstm_1 (LSTM)                   (None, 512)          2099200     lstm[0][0]
+                                                                 lstm[1][0]
+__________________________________________________________________________________________________
+embed_layer (Concatenate)       (None, 1024)         0           lstm_1[0][0]
+                                                                 lstm_1[1][0]
+__________________________________________________________________________________________________
+dense (Dense)                   (None, 28)           28700       embed_layer[0][0]
+__________________________________________________________________________________________________
+activation (Activation)         (None, 28)           0           dense[0][0]
+==================================================================================================
+Total params: 3,220,044
+Trainable params: 3,220,044
+Non-trainable params: 0
+__________________________________________________________________________________________________
+2022-12-04 20:47:02.436463 | None
+2022-12-04 20:47:02.483733 | Starr et al. 2020...
+2022-12-04 20:47:42.219640: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2022-12-04 20:47:42.239377: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2400000000 Hz
+2022-12-04 20:47:43.382550: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-12-04 20:47:44.924512: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-12-04 20:47:45.081818: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+105526
+2022-12-04 20:48:04.944663 | X is 4 Mb
+2022-12-04 20:48:04.947897 | n_samples: 1275
+2022-12-04 20:48:04.947934 | inference_batch_size: 100
+2022-12-04 20:48:04.947946 | n_batches: 13
+2022-12-04 20:48:09.434555 | X_embed_cat is 5 Mb
+2022-12-04 20:48:09.434659 | deleted X to free some space in the memory...
+2022-12-04 20:49:29.608667 | X is 38496 Mb
+2022-12-04 20:49:29.616559 | n_samples: 12750000
+2022-12-04 20:49:29.616594 | inference_batch_size: 100
+2022-12-04 20:49:29.616607 | n_batches: 127500
+2022-12-05 09:09:02.553831 | X_embed_cat is 49805 Mb
+2022-12-05 09:09:02.656754 | deleted X to free some space in the memory...
+2022-12-05 09:11:58.514543 | X is 38496 Mb
+2022-12-05 09:11:58.944570 | n_samples: 12750000
+2022-12-05 09:11:58.944680 | inference_batch_size: 100
+2022-12-05 09:11:58.944721 | n_batches: 127500
+2022-12-05 21:31:10.485323 | X_embed_cat is 49805 Mb
+2022-12-05 21:31:10.605166 | deleted X to free some space in the memory...
+2022-12-05 21:34:10.586762 | X is 38496 Mb
+2022-12-05 21:34:11.263929 | n_samples: 12750000
+2022-12-05 21:34:11.264030 | inference_batch_size: 100
+2022-12-05 21:34:11.264070 | n_batches: 127500
+2022-12-06 09:52:58.368433 | X_embed_cat is 49805 Mb
+2022-12-06 09:52:58.444740 | deleted X to free some space in the memory...
+2022-12-06 09:56:10.514097 | X is 38496 Mb
+2022-12-06 09:56:11.362200 | n_samples: 12750000
+2022-12-06 09:56:11.362307 | inference_batch_size: 100
+2022-12-06 09:56:11.362348 | n_batches: 127500
+2022-12-06 22:15:57.817815 | X_embed_cat is 49805 Mb
+2022-12-06 22:15:57.991140 | deleted X to free some space in the memory...
+2022-12-06 22:19:05.908099 | X is 38496 Mb
+2022-12-06 22:19:07.127343 | n_samples: 12750000
+2022-12-06 22:19:07.127474 | inference_batch_size: 100
+2022-12-06 22:19:07.127516 | n_batches: 127500
+2022-12-07 10:38:15.223151 | X_embed_cat is 49805 Mb
+2022-12-07 10:38:15.344373 | deleted X to free some space in the memory...
+2022-12-07 10:41:31.665416 | X is 38496 Mb
+2022-12-07 10:41:32.400645 | n_samples: 12750000
+2022-12-07 10:41:32.400752 | inference_batch_size: 100
+2022-12-07 10:41:32.400793 | n_batches: 127500
