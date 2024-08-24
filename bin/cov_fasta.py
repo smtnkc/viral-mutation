@@ -126,8 +126,8 @@ if __name__ == '__main__':
     vocabulary = { aa: idx + 1 for idx, aa in enumerate(sorted(AAs)) }
     vocab_size = len(AAs) + 2
 
-    model = get_model(args, 1584, vocab_size,
-                      inference_batch_size=args.batch_size)
+    model = get_model(args, 1280, vocab_size,
+                      inference_batch_size=args.inference_batch_size)
     model.model_.load_weights(args.checkpoint)
     tprint('Model summary:')
     tprint(model.model_.summary())

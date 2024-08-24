@@ -10,3 +10,4 @@ temp*
 .DS_Store
 slurm/
 __pycache__/
+target/

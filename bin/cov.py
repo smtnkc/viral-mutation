@@ -1,5 +1,6 @@
 from mutation import *
 import pickle
+import csv
 
 np.random.seed(1)
 random.seed(1)
@@ -13,9 +14,11 @@ def parse_args():
                         help='Model namespace')
     parser.add_argument('--dim', type=int, default=512,
                         help='Embedding dimension')
-    parser.add_argument('--batch-size', type=int, default=100,
+    parser.add_argument('--batch_size', type=int, default=87,
                         help='Training minibatch size')
-    parser.add_argument('--n-epochs', type=int, default=4,
+    parser.add_argument('--inference_batch_size', type=int, default=1000,
+                        help='Inference minibatch size')
+    parser.add_argument('--n_epochs', type=int, default=1,
                         help='Number of training epochs')
     parser.add_argument('--seed', type=int, default=1,
                         help='Random seed')
@@ -37,6 +40,10 @@ def parse_args():
                         help='Analyze reinfection cases')
     parser.add_argument('--newmut', action='store_true',
                         help='Analyze reinfection cases')
+    parser.add_argument('--cscs', action='store_true',
+                        help='Analyze CSCS')
+    parser.add_argument('--use_avg_embedding', action='store_true',
+                        help='Use average embedding for semantics while calculating CSCS')
     args = parser.parse_args()
     return args
 
@@ -121,26 +128,28 @@ def parse_gisaid(entry):
     }
     return meta
 
-def process(fnames):
+def process(fnames, out_file_name):
     seqs = {}
     for fname in fnames:
         for record in SeqIO.parse(fname, 'fasta'):
             if len(record.seq) < 1000:
                 continue
-            if str(record.seq).count('X') > 0:
-                continue
+            #if str(record.seq).count('X') > 0:
+                #continue
             if record.seq not in seqs:
                 seqs[record.seq] = []
             if fname == 'data/cov/viprbrc_db.fasta':
                 meta = parse_viprbrc(record.description)
             elif fname == 'data/cov/gisaid.fasta':
                 meta = parse_gisaid(record.description)
-            else:
+            elif fname == 'data/cov/sars_cov2_seqs.fa':
                 meta = parse_nih(record.description)
+            else:
+                meta = {}
             meta['accession'] = record.description
             seqs[record.seq].append(meta)
 
-    with open('data/cov/cov_all.fa', 'w') as of:
+    with open(f'data/cov/{out_file_name}', 'w') as of:
         for seq in seqs:
             metas = seqs[seq]
             for meta in metas:
@@ -176,20 +185,37 @@ def sample_seqs(seqs):
     return sample_seqs
 
 def setup(args):
-    fnames = [ 'data/cov/sars_cov2_seqs.fa',
-               'data/cov/viprbrc_db.fasta',
-               'data/cov/gisaid.fasta' ]
+    ref_fnames = [  'data/cov/wt_before_alignment.fasta',
+                'data/cov/omic_before_alignment.fasta'
+                # 'data/cov/sars_cov2_seqs.fa',
+                # 'data/cov/viprbrc_db.fasta',
+                # 'data/cov/gisaid.fasta' 
+        ]
+    
+    mut_fnames = [  'data/cov/eris_before_alignment.fasta',
+                'data/cov/new_before_alignment.fasta',
+                'data/cov/gpt_before_alignment.fasta'
+        ]
 
-    seqs = process(fnames)
-    #seqs = dict(list(seqs.items())[:100])
-    seq_len = max([ len(seq) for seq in seqs ]) + 2
+    ref_seqs = process(ref_fnames, "ref_seqs.fa")
+    mut_seqs = process(mut_fnames, "mut_seqs.fa")
+
+    #mut_seqs = dict(list(mut_seqs.items())[:10])
+    ref_max_len = max([ len(seq) for seq in ref_seqs ])
+    mut_max_len = max([ len(seq) for seq in mut_seqs ])
+    seq_len = max(ref_max_len, mut_max_len) + 2
     vocab_size = len(AAs) + 2
 
-    model = get_model(args, seq_len, vocab_size,
-                      inference_batch_size=100)
+    tprint("SEQ LEN: {}".format(seq_len))
+    tprint("VOCAB SIZE: {}".format(vocab_size))
+    tprint('{} unique omicron sequences with the max length of {}.'.format(len(ref_seqs), ref_max_len))
+    tprint('{} unique mutant sequences with the max length of {}.'.format(len(mut_seqs), mut_max_len))
 
-    tprint('{} unique sequences with the max length of {}.'.format(len(seqs), seq_len))
-    return model, seqs
+    tprint("LOADING MODEL...")
+    model = get_model(args, seq_len, vocab_size)
+    tprint("MODEL LOADED.")
+
+    return model, ref_seqs, mut_seqs
 
 def interpret_clusters(adata):
     clusters = sorted(set(adata.obs['louvain']))
@@ -279,13 +305,17 @@ def grammaticality_change(word_pos_prob, seq, mutations, args, vocabulary, model
         aa_pos = int(mutation[1:-1]) - 1
         aa_mut = mutation[-1]
         if (seq[aa_pos] != aa_orig):
-            print(mutation)
+            tprint(mutation)
         assert(seq[aa_pos] == aa_orig)
         mut_probs.append(word_pos_prob[(aa_mut, aa_pos)])
 
     return np.mean(np.log10(mut_probs))
 
 def get_mutations(seq1, seq2):
+    # Perform global sequence alignment between two sequences.
+    # 5: match score, -4: mismatch penalty, -3: gap opening penalty, -0.1: gap extension penalty.
+    # `one_alignment_only=True` ensures that only the best alignment is returned.
+
     mutations = []
     from Bio import pairwise2
     alignment = pairwise2.align.globalms(
@@ -372,22 +402,22 @@ def analyze_new_mutations(args, model, seqs, vocabulary):
                                           args, vocabulary, model)
         mut_gramms.append(mut_gramm)
 
-        print('{}: Grammar percentile = {}%'.format(
+        tprint('{}: Grammar percentile = {}%'.format(
             name, ss.percentileofscore(null_grammar, mut_gramm)
         ))
-        print('{}: Change percentile = {}%'.format(
+        tprint('{}: Change percentile = {}%'.format(
             name, ss.percentileofscore(null_changes, mut_change)
         ))
-        print('{}: Combined percentile = {}, N = {}'.format(
+        tprint('{}: Combined percentile = {}, N = {}'.format(
             name, *get_escape_potential(mut_gramm, mut_change,
                                         null_grammar, null_changes)
         ))
 
         for idx in np.argwhere(null_changes > mut_change).ravel():
-            print('\tlen: {},\tstart char: {}'.format(len(sorted_seqs[idx]),
+            tprint('\tlen: {},\tstart char: {}'.format(len(sorted_seqs[idx]),
                                                       sorted_seqs[idx][0]))
             if name == 'andreano':
-                print('\tHigher change mutations:')
+                tprint('\tHigher change mutations:')
                 from Bio import pairwise2
                 alignment = pairwise2.align.globalms(
                     wt_seq, sorted_seqs[idx], 5, -4, -3, -.1,
@@ -395,7 +425,7 @@ def analyze_new_mutations(args, model, seqs, vocabulary):
                 )[0]
                 for idx, (ch1, ch2) in enumerate(zip(alignment[0], alignment[1])):
                     if ch1 != ch2:
-                        print('\t\t{}{}{}'.format(ch1, idx + 1, ch2))
+                        tprint('\t\t{}{}{}'.format(ch1, idx + 1, ch2))
 
         for mutation in mutations:
             mut_seq = make_mutant(wt_seq, [ mutation ])
@@ -407,7 +437,7 @@ def analyze_new_mutations(args, model, seqs, vocabulary):
             mut_gramm = grammaticality_change(word_pos_prob, wt_seq, [ mutation ],
                                               args, vocabulary, model)
 
-            print('\tMutation {}: change = {}, percentile = {}%'.format(
+            tprint('\tMutation {}: change = {}, percentile = {}%'.format(
                 mutation, change,
                 ss.percentileofscore(null_changes, change)
             ))
@@ -436,6 +466,161 @@ def analyze_new_mutations(args, model, seqs, vocabulary):
     plt.savefig('figures/cov_new_mut_cscs.png', dpi=500)
     plt.close()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def analyze_cscs(args, model, seqs, mut_seqs, vocabulary):
+
+    tprint("Generating Omicron embeddings...")
+    checkpoint_name = args.checkpoint.split('.')[0].split('/')[-1]
+    seqs = embed_seqs(args, model, seqs, vocabulary, use_cache=True, namespace=f'null_by_{checkpoint_name}')
+
+    if args.use_avg_embedding:
+        # get first omicron sequence as reference sequence
+        for record in SeqIO.parse("data/cov/omic_before_alignment.fasta", "fasta"):
+            tmp_seq = str(record.seq)
+            if len(tmp_seq) == 1273 and tmp_seq.count('X') == 0:
+                ref_seq = str(tmp_seq)
+                break
+        # get average embedding of seqs
+        max_length = 1280  # Example length, adjust as needed
+        padded_embeddings = [pad_embedding(embedding, max_length) for embedding in [seqs[seq][0]['embedding'] for seq in seqs]]
+        avg_embedding = np.mean(padded_embeddings, axis=0)
+        ref_embedding = avg_embedding
+    else:
+        ref_seq = str(SeqIO.read('data/cov/wt_before_alignment.fasta', 'fasta').seq)
+        ref_embedding = seqs[ref_seq][0]['embedding']
+
+    tprint("Generating mutant embeddings...")
+    mut_embeddings = embed_seqs(args, model, mut_seqs, vocabulary, use_cache=True, namespace=f'mutants_by_{checkpoint_name}')
+
+    tprint("Predicting sequence probabilities for {} mutants...".format(len(mut_seqs)))
+    y_pred = predict_sequence_prob(args, ref_seq, vocabulary, model, verbose=False)
+
+    tprint("Generating word position probabilities...")
+    word_pos_prob = {}
+    for pos in range(len(ref_seq)):
+        for word in vocabulary:
+            word_idx = vocabulary[word]
+            prob = y_pred[pos + 1, word_idx]
+            word_pos_prob[(word, pos)] = prob
+
+    tprint("Sorting sequences...")
+    sorted_seqs = sorted([
+        seq for seq in seqs
+        if (seq != ref_seq and seq.startswith('M') and seq.endswith('HYT'))
+    ])
+
+    tprint("Generating null changes...")
+    null_changes = np.array([
+        abs(seqs[seq][0]['embedding'].mean(0) - ref_embedding.mean(0)).sum()
+        for seq in sorted_seqs
+    ])
+
+    tprint("Generating null grammaticality distributions...")
+    null_grammar = np.array([
+        grammaticality_change(word_pos_prob, ref_seq, get_mutations(ref_seq, seq),
+                              args, vocabulary, model)
+        for seq in sorted_seqs
+    ])
+    tprint('Background set of {} sequences'.format(len(null_changes)))
+
+ 
+    # Initialize lists to store results
+    mut_sc_values, mut_gr_values, mut_cscs_values = [], [], []
+    mut_gr_per_values, mut_sc_per_values, mut_cscs_per_values, mut_Ns = [], [], [], []
+
+    mut_seq_ids = []
+
+    # Loop through each mutant sequence
+    for mut_seq in mut_seqs:
+
+        # Compute embedding and change
+        mut_embedding = mut_embeddings[mut_seq][0]['embedding']
+        mut_seq_id = mut_embeddings[mut_seq][0]['accession']
+        mut_sc = abs(mut_embedding.mean(0) - ref_embedding.mean(0)).sum()
+        mut_sc_values.append(mut_sc)
+
+        # Get mutations
+        mutations = get_mutations(ref_seq, mut_seq)
+
+        # Compute grammaticality change
+        mut_gr = grammaticality_change(word_pos_prob, ref_seq, mutations, args, vocabulary, model)
+        mut_gr_values.append(mut_gr)
+
+        # Calculate escape potential values
+        mut_cscs = mut_gr + mut_sc
+        mut_cscs_values.append(mut_cscs)
+        mut_gr_per = ss.percentileofscore(null_grammar, mut_gr)
+        mut_gr_per_values.append(mut_gr_per)
+        mut_sc_per = ss.percentileofscore(null_changes, mut_sc)
+        mut_sc_per_values.append(mut_sc_per)
+        mut_cscs_per, n = get_escape_potential(mut_gr, mut_sc, null_grammar, null_changes)
+        mut_cscs_per *= 100
+        mut_cscs_per_values.append(mut_cscs_per)
+        mut_N = len(null_changes) - n
+        mut_Ns.append(mut_N)
+        mut_seq_ids.append(mut_seq_id)
+
+        tprint("{}: gr = {:.4f} ({:.1f}%), sc = {:.4f} ({:.1f}%), cscs = {:.4f} ({:.1f}%), N = {}/{}".format(
+            mut_seq_id, mut_gr, mut_gr_per, mut_sc, mut_sc_per, mut_cscs, mut_cscs_per, mut_N, len(null_changes)))
+
+    # Save results to CSV
+    out_path = f'outs/cscs_scores_avg_{checkpoint_name}.csv' if args.use_avg_embedding else f'outs/cscs_scores_wt_{checkpoint_name}.csv'
+    with open(out_path, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(['name', 'gr', 'gr_per', 'sc', 'sc_per', 'cscs', 'cscs_per', 'N'])
+        for i in range(len(mut_seqs)):
+            writer.writerow([mut_seq_ids[i], mut_gr_values[i], mut_gr_per_values[i], mut_sc_values[i], 
+                            mut_sc_per_values[i], mut_cscs_values[i], mut_cscs_per_values[i], mut_Ns[i]])
+
+
+
+
+
+
+
+
+
+
+
+def pad_embedding(embedding, max_length):
+    if embedding.shape[0] < max_length:
+        # Pad with zeros if embedding length is less than max_length
+        padding = np.zeros((max_length - embedding.shape[0], embedding.shape[1]))
+        return np.vstack([embedding, padding])
+    elif embedding.shape[0] > max_length:
+        # Truncate if embedding length is greater than max_length
+        return embedding[:max_length]
+    else:
+        return embedding
+
+
+
 if __name__ == '__main__':
     args = parse_args()
 
@@ -446,18 +631,19 @@ if __name__ == '__main__':
     ]
     vocabulary = { aa: idx + 1 for idx, aa in enumerate(sorted(AAs)) }
 
-    model, seqs = setup(args)
+    model, seqs, mut_seqs = setup(args)
     # seqs = sample_seqs(seqs) # random sampling 1% of the dataset
+    tprint("SETUP COMPLETE.")
 
     if 'esm' in args.model_name:
         args.checkpoint = args.model_name
     elif args.checkpoint is not None:
         model.model_.load_weights(args.checkpoint)
         tprint('Model summary:')
-        tprint(model.model_.summary())
+        print(model.model_.summary())
 
     if args.train:
-        batch_train(args, model, seqs, vocabulary, batch_size=600)
+        batch_train(args, model, seqs, vocabulary, batch_size=args.batch_size)
 
     if args.train_split or args.test:
         train_test(args, model, seqs, vocabulary, split_seqs)
@@ -538,3 +724,11 @@ if __name__ == '__main__':
                              'from checkpoint.')
 
         analyze_new_mutations(args, model, seqs, vocabulary)
+
+    if args.cscs:
+        tprint("Analyzing CSCS...")
+        if args.checkpoint is None and not args.train:
+            raise ValueError('Model must be trained or loaded '
+                             'from checkpoint.')
+
+        analyze_cscs(args, model, seqs, mut_seqs, vocabulary)

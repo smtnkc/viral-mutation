@@ -5,8 +5,7 @@ from copy import deepcopy
 def err_model(name):
     raise ValueError('Model {} not supported'.format(name))
 
-def get_model(args, seq_len, vocab_size,
-              inference_batch_size=1500):
+def get_model(args, seq_len, vocab_size):
     if args.model_name == 'hmm':
         from hmmlearn.hmm import MultinomialHMM
         model = MultinomialHMM(
@@ -30,7 +29,7 @@ def get_model(args, seq_len, vocab_size,
             n_hidden=2,
             n_epochs=args.n_epochs,
             batch_size=args.batch_size,
-            inference_batch_size=inference_batch_size,
+            inference_batch_size=args.inference_batch_size,
             cache_dir='target/{}'.format(args.namespace),
             seed=args.seed,
             verbose=True,
@@ -45,7 +44,7 @@ def get_model(args, seq_len, vocab_size,
             n_hidden=2,
             n_epochs=args.n_epochs,
             batch_size=args.batch_size,
-            inference_batch_size=inference_batch_size,
+            inference_batch_size=args.inference_batch_size,
             cache_dir='target/{}'.format(args.namespace),
             seed=args.seed,
             verbose=True,
@@ -60,7 +59,7 @@ def get_model(args, seq_len, vocab_size,
             n_hidden=2,
             n_epochs=args.n_epochs,
             batch_size=args.batch_size,
-            inference_batch_size=inference_batch_size,
+            inference_batch_size=args.inference_batch_size,
             cache_dir='target/{}'.format(args.namespace),
             seed=args.seed,
             verbose=True,
@@ -75,7 +74,7 @@ def get_model(args, seq_len, vocab_size,
             n_hidden=2,
             n_epochs=args.n_epochs,
             batch_size=args.batch_size,
-            inference_batch_size=inference_batch_size,
+            inference_batch_size=args.inference_batch_size,
             cache_dir='target/{}'.format(args.namespace),
             seed=args.seed,
             verbose=True,
@@ -152,7 +151,7 @@ def batch_train(args, model, seqs, vocabulary, batch_size=5000,
 
     n_batches = math.ceil(len(seqs) / float(batch_size))
     if verbose:
-        tprint('Traing seq batch size: {}, N batches: {}'
+        tprint('Training seq batch size: {}, N batches: {}'
                .format(batch_size, n_batches))
 
     for epoch in range(n_epochs):
@@ -162,6 +161,7 @@ def batch_train(args, model, seqs, vocabulary, batch_size=5000,
         random.shuffle(perm_seqs)
 
         for batchi in range(n_batches):
+            tprint('Batch {}/{}'.format(batchi + 1, n_batches))
             start = batchi * batch_size
             end = (batchi + 1) * batch_size
             seqs_batch = { seq: seqs[seq] for seq in perm_seqs[start:end] }

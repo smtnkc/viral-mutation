@@ -1,5 +1,13 @@
 # Learning the language of viral evolution and escape
 
+To solve dependency and CUDA issues:
+
+```bash
+conda env create -f environment.yml
+ln -s /home/audp/anaconda3/envs/hie/lib/libcusolver.so.11 /home/audp/anaconda3/envs/hie/lib/python3.7/site-packages/tensorflow/python/libcusolver.so.10
+ln -s /home/audp/anaconda3/envs/hie/lib/libcudart.so.10.2 /home/audp/anaconda3/envs/hie/lib/python3.7/site-packages/tensorflow/python/libcudart.so.10.1
+```
+
 This repository contains the analysis code, links to the data, and pretrained models for the paper ["Learning the language of viral evolution and escape"](https://science.sciencemag.org/content/371/6526/284) by Brian Hie, Ellen Zhong, Bonnie Berger, and Bryan Bryson (2021).
 
 ### Data

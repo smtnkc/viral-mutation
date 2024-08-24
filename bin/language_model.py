@@ -28,9 +28,7 @@ class LanguageModel(object):
                                   'of base class.')
 
     def fit(self, X_cat, lengths):
-        X, y = self.split_and_pad(
-            X_cat, lengths, self.seq_len_, self.vocab_size_, self.verbose_
-        )
+        X, y = self.split_and_pad( X_cat, lengths, self.seq_len_, self.verbose_)
 
         opt = Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999,
                    amsgrad=False)
@@ -59,8 +57,7 @@ class LanguageModel(object):
         return self
 
     def predict(self, X_cat, lengths):
-        X = self.split_and_pad(X_cat, lengths, self.seq_len_,
-                               self.vocab_size_, self.verbose_)[0]
+        X = self.split_and_pad(X_cat, lengths, self.seq_len_, self.verbose_)[0]
 
         y_pred = self.model_.predict(
             X, batch_size=self.inference_batch_size_
@@ -69,10 +66,7 @@ class LanguageModel(object):
         return y_pred
 
     def transform(self, X_cat, lengths, embed_fname=None):
-        X = self.split_and_pad(
-            X_cat, lengths,
-            self.seq_len_, self.vocab_size_, self.verbose_,
-        )[0]
+        X = self.split_and_pad(X_cat, lengths,self.seq_len_, self.verbose_)[0]
         tprint('X is {} Mb'.format(round((X[0].nbytes + X[1].nbytes) / (1024*1024))))
         # For now, each character in each sequence becomes a sample.
         n_samples = sum(lengths)
@@ -98,20 +92,25 @@ class LanguageModel(object):
 
         if self.verbose_:
             tprint('Embedding...')
-            prog_bar = tf.keras.utils.Progbar(n_batches)
+            #prog_bar = tf.keras.utils.Progbar(n_batches)
         X_embed_cat_nbytes = 0
         for batchi in range(n_batches):
+            tprint('batch: {}/{}'.format(batchi, n_batches))
             start = batchi * self.inference_batch_size_
             end = min((batchi + 1) * self.inference_batch_size_, n_samples)
+            #tprint('start: {}'.format(start))
+            #tprint('end: {}'.format(end))
             if type(X) == list:
                 X_batch = [ X_i[start:end] for X_i in X ]
             else:
                 X_batch = X[start:end]
+            #tprint('X_batch is ready...')
             X_batch_emb = hidden(X_batch)
+            #tprint('X_batch_emb is ready...')
             X_embed_cat.append(X_batch_emb)
             X_embed_cat_nbytes += X_batch_emb.nbytes
-            if self.verbose_:
-                prog_bar.add(1)
+            #if self.verbose_:
+                #prog_bar.add(1)
 
         tprint('X_embed_cat is {} Mb'.format(round(X_embed_cat_nbytes / (1024*1024))))
         del X # free some space in RAM
@@ -130,7 +129,7 @@ class LanguageModel(object):
 
     def score(self, X_cat, lengths):
         X, y_true = self.split_and_pad(
-            X_cat, lengths, self.seq_len_, self.vocab_size_, self.verbose_
+            X_cat, lengths, self.seq_len_, self.verbose_
         )
 
         opt = Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999,
@@ -199,7 +198,7 @@ class DNNLanguageModel(LanguageModel):
         self.model_name_ = model_name
         self.verbose_ = verbose
 
-    def split_and_pad(self, X_cat, lengths, seq_len, vocab_size, verbose):
+    def split_and_pad(self, X_cat, lengths, seq_len, verbose):
         if X_cat.shape[0] != sum(lengths):
             raise ValueError('Length dimension mismatch: {} and {}'
                              .format(X_cat.shape[0], sum(lengths)))
@@ -290,7 +289,7 @@ class LSTMLanguageModel(LanguageModel):
         self.model_name_ = model_name
         self.verbose_ = verbose
 
-    def split_and_pad(self, X_cat, lengths, seq_len, vocab_size, verbose):
+    def split_and_pad(self, X_cat, lengths, seq_len, verbose):
         if X_cat.shape[0] != sum(lengths):
             raise ValueError('Length dimension mismatch: {} and {}'
                              .format(X_cat.shape[0], sum(lengths)))
@@ -376,7 +375,7 @@ class BiLSTMLanguageModel(LanguageModel):
         self.model_name_ = model_name
         self.verbose_ = verbose
 
-    def split_and_pad(self, X_cat, lengths, seq_len, vocab_size, verbose):
+    def split_and_pad(self, X_cat, lengths, seq_len, verbose):
         if X_cat.shape[0] != sum(lengths):
             raise ValueError('Length dimension mismatch: {} and {}'
                              .format(X_cat.shape[0], sum(lengths)))
@@ -474,7 +473,7 @@ class AttentionLanguageModel(LanguageModel):
         self.model_name_ = model_name
         self.verbose_ = verbose
 
-    def split_and_pad(self, X_cat, lengths, seq_len, vocab_size, verbose):
+    def split_and_pad(self, X_cat, lengths, seq_len, verbose):
         if X_cat.shape[0] != sum(lengths):
             raise ValueError('Length dimension mismatch: {} and {}'
                              .format(X_cat.shape[0], sum(lengths)))
