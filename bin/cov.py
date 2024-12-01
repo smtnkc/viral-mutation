@@ -335,7 +335,7 @@ def get_escape_potential(gramm, change, null_gramm, null_change):
     for ng, nc in zip(null_gramm, null_change):
         if ng < gramm or nc < change:
             count += 1
-    return count / len(null_gramm), len(null_gramm) - count
+    return count / len(null_gramm), count
 
 def analyze_new_mutations(args, model, seqs, vocabulary):
     uk_mutations = [
@@ -579,14 +579,13 @@ def analyze_cscs(args, model, seqs, mut_seqs, vocabulary):
         mut_gr_per_values.append(mut_gr_per)
         mut_sc_per = ss.percentileofscore(null_changes, mut_sc)
         mut_sc_per_values.append(mut_sc_per)
-        mut_cscs_per, n = get_escape_potential(mut_gr, mut_sc, null_grammar, null_changes)
+        mut_cscs_per, mut_N = get_escape_potential(mut_gr, mut_sc, null_grammar, null_changes)
         mut_cscs_per *= 100
         mut_cscs_per_values.append(mut_cscs_per)
-        mut_N = len(null_changes) - n
         mut_Ns.append(mut_N)
         mut_seq_ids.append(mut_seq_id)
 
-        tprint("{}: gr = {:.4f} ({:.1f}%), sc = {:.4f} ({:.1f}%), cscs = {:.4f} ({:.1f}%), N = {}/{}".format(
+        tprint("{}: gr = {:.4f} ({:.1f}%), sc = {:.4f} ({:.1f}%), cscs = {:.4f} (> {:.1f}% of null values), N = {}/{}".format(
             mut_seq_id, mut_gr, mut_gr_per, mut_sc, mut_sc_per, mut_cscs, mut_cscs_per, mut_N, len(null_changes)))
 
     # Save results to CSV

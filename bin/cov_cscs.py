@@ -1,61 +1,71 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
-def display_table(rank_metrics, embedding_type, checkpoint_name, show_percentage=True):
+def display_table(rank_metric, embedding_type, checkpoint_name, show_percentage=True):
     # Reading the data
-    df_cscs = pd.read_csv(f"outs/cscs_scores_{embedding_type}_{checkpoint_name}.csv")
+    df_cscs = pd.read_csv(f"outs/cscs_scores_OR/cscs_scores_{embedding_type}_{checkpoint_name}.csv")
     # delete part after _ in the name
     df_cscs['name'] = df_cscs['name'].str.split('_').str[0]
-
-    for rank_metric in rank_metrics:
-        # Prepare data for the merged table
-        top_k_values = [100, 500, 1000]
-
-        row_data = []
-        for k in top_k_values:
-            df_topk = df_cscs.sort_values(by=rank_metric, ascending=(True if "gr" in rank_metric else False)).head(k)
-            # Count the number of each source in the top-K
-            eris_count = df_topk[df_topk['name'] == 'eris'].shape[0]
-            new_count = df_topk[df_topk['name'] == 'new'].shape[0]
-            gpt_count = df_topk[df_topk['name'] == 'gpt'].shape[0]
-
-            if show_percentage:
-                eris_count = eris_count / k * 100
-                new_count = new_count / k * 100
-                gpt_count = gpt_count / k * 100
-                row_data.extend([f'{eris_count:.1f}'])
-            else:
-                row_data.extend([eris_count, new_count, gpt_count])
-
-        # Create multi-level columns
-        columns = pd.MultiIndex.from_product(
-            [[f'Top-{k}' for k in top_k_values], ['Eris'] if show_percentage else ['Eris', 'New', 'GPT']],
-            names=['Top-K', 'Source']
-        )
-
-        # Create the DataFrame with multi-level columns
-        merged_table = pd.DataFrame([row_data], columns=columns)
-
-        print(merged_table)
-        return merged_table
-
-wt_table_cov   = display_table(rank_metrics=['cscs_per'], embedding_type='wt', checkpoint_name='cov', show_percentage=True)
-avg_table_cov  = display_table(rank_metrics=['cscs_per'], embedding_type='avg', checkpoint_name='cov', show_percentage=True)
-wt_table_omic  = display_table(rank_metrics=['cscs_per'], embedding_type='wt', checkpoint_name='omic', show_percentage=True)
-avg_table_omic = display_table(rank_metrics=['cscs_per'], embedding_type='avg', checkpoint_name='omic', show_percentage=True)
+    df_cscs['rank_by_sc'] = df_cscs['sc_per'].rank(ascending=False)
+    df_cscs['rank_by_gr'] = df_cscs['gr_per'].rank(ascending=False)
+    df_cscs['rank_by_N'] = df_cscs['N'].rank(ascending=False) # N is the number of mutations with ng < gr and nc < sc
+    df_cscs['rank_by_cscs_per'] = df_cscs['cscs_per'].rank(ascending=False)
+    df_cscs['rank_by_scgr'] = df_cscs["rank_by_sc"] + df_cscs["rank_by_gr"]
 
 
+    # Prepare data for the merged table
+    top_k_values = [100, 500, 1000]
+
+    row_data = []
+    for k in top_k_values:
+        #df_topk = df_cscs.sort_values(by=rank_metric, ascending=(True if "gr" in rank_metric else False)).head(k)
+        df_topk = df_cscs.sort_values(by=rank_metric, ascending=True).head(k)
+        # Count the number of each source in the top-K
+        eris_count = df_topk[df_topk['name'] == 'eris'].shape[0]
+        new_count = df_topk[df_topk['name'] == 'new'].shape[0]
+        gpt_count = df_topk[df_topk['name'] == 'gpt'].shape[0]
+
+        if show_percentage:
+            eris_count = eris_count / k * 100
+            new_count = new_count / k * 100
+            gpt_count = gpt_count / k * 100
+            row_data.extend([f'{eris_count:.1f}', f'{new_count:.1f}', f'{gpt_count:.1f}'])
+        else:
+            row_data.extend([eris_count, new_count, gpt_count])
+
+    # Create multi-level columns
+    columns = pd.MultiIndex.from_product(
+        [[f'Top-{k}' for k in top_k_values], ['Eris', 'New', 'GPT']],
+        names=['Top-K', 'Source']
+    )
+
+    # Create the DataFrame with multi-level columns
+    merged_table = pd.DataFrame([row_data], columns=columns)
+
+    print(f"\nEmbedding type: {embedding_type}, Checkpoint: {checkpoint_name}, Rank metric: {rank_metric}")
+    print(merged_table)
+    return merged_table
+
+wt_table_cov   = display_table(rank_metric='rank_by_scgr', embedding_type='wt', checkpoint_name='cov', show_percentage=True)
+avg_table_cov  = display_table(rank_metric='rank_by_scgr', embedding_type='avg', checkpoint_name='cov', show_percentage=True)
+wt_table_omic  = display_table(rank_metric='rank_by_scgr', embedding_type='wt', checkpoint_name='omic', show_percentage=True)
+avg_table_omic = display_table(rank_metric='rank_by_scgr', embedding_type='avg', checkpoint_name='omic', show_percentage=True)
+
+
+print("\n")
 row_name_wt_cov  = "BiLSTM (\\texttt{{WT}}) &"
 row_name_avg_cov = "BiLSTM (\\texttt{{AVG}}) &"
 row_name_wt_omic = "BiLSTM$^+$ (\\texttt{{WT}}) &"
 row_name_avg_omic= "BiLSTM$^+$ (\\texttt{{AVG}}) &"
 
 # print rows of each table. add & between cell values
-
-print(row_name_wt_cov.format(), '\% & '.join(map(str, wt_table_cov.values[0])) + "\% \\\\")
-print(row_name_avg_cov.format(), '\% & '.join(map(str, avg_table_cov.values[0])) + "\% \\\\")
-print(row_name_wt_omic.format(), '\% & '.join(map(str, wt_table_omic.values[0])) + "\% \\\\")
-print(row_name_avg_omic.format(), '\% & '.join(map(str, avg_table_omic.values[0])) + "\% \\\\")
+print("Percentages for Eris:")
+selected_indices = [0,3,6]
+print(row_name_wt_cov.format(), '\% & '.join(map(str, [wt_table_cov.values[0][j] for j in selected_indices])) + "\% \\\\")
+print(row_name_avg_cov.format(), '\% & '.join(map(str, [avg_table_cov.values[0][j] for j in selected_indices])) + "\% \\\\")
+print(row_name_wt_omic.format(), '\% & '.join(map(str, [wt_table_omic.values[0][j] for j in selected_indices])) + "\% \\\\")
+print(row_name_avg_omic.format(), '\% & '.join(map(str, [avg_table_omic.values[0][j] for j in selected_indices])) + "\% \\\\")
 
 
 
