@@ -4,7 +4,7 @@ import numpy as np
 
 def display_table(rank_metric, embedding_type, checkpoint_name, show_percentage=True):
     # Reading the data
-    df_cscs = pd.read_csv(f"outs/cscs_scores_OR/cscs_scores_{embedding_type}_{checkpoint_name}.csv")
+    df_cscs = pd.read_csv(f"../outs/cscs_scores_OR/cscs_scores_{embedding_type}_{checkpoint_name}.csv")
     # delete part after _ in the name
     df_cscs['name'] = df_cscs['name'].str.split('_').str[0]
     df_cscs['rank_by_sc'] = df_cscs['sc_per'].rank(ascending=False)
@@ -15,7 +15,7 @@ def display_table(rank_metric, embedding_type, checkpoint_name, show_percentage=
 
 
     # Prepare data for the merged table
-    top_k_values = [100, 500, 1000]
+    top_k_values = [300, 600, 900, 1200]
 
     row_data = []
     for k in top_k_values:
@@ -54,19 +54,20 @@ avg_table_omic = display_table(rank_metric='rank_by_scgr', embedding_type='avg',
 
 
 print("\n")
-row_name_wt_cov  = "BiLSTM (\\texttt{{WT}}) &"
-row_name_avg_cov = "BiLSTM (\\texttt{{AVG}}) &"
-row_name_wt_omic = "BiLSTM$^+$ (\\texttt{{WT}}) &"
-row_name_avg_omic= "BiLSTM$^+$ (\\texttt{{AVG}}) &"
+row_name_wt_cov  = "BiLSTM ($\mathbf{{z}}_{{wt}}$) &"
+row_name_avg_cov = "BiLSTM ($\mathbf{{z}}_{{avg}}$) &"
+row_name_wt_omic = "BiLSTM$^+$ ($\mathbf{{z}}_{{wt}}$) &"
+row_name_avg_omic= "BiLSTM$^+$ ($\mathbf{{z}}_{{avg}}$) &"
 
 # print rows of each table. add & between cell values
 print("Percentages for Eris:")
-selected_indices = [0,3,6]
-print(row_name_wt_cov.format(), '\% & '.join(map(str, [wt_table_cov.values[0][j] for j in selected_indices])) + "\% \\\\")
-print(row_name_avg_cov.format(), '\% & '.join(map(str, [avg_table_cov.values[0][j] for j in selected_indices])) + "\% \\\\")
-print(row_name_wt_omic.format(), '\% & '.join(map(str, [wt_table_omic.values[0][j] for j in selected_indices])) + "\% \\\\")
-print(row_name_avg_omic.format(), '\% & '.join(map(str, [avg_table_omic.values[0][j] for j in selected_indices])) + "\% \\\\")
+selected_indices = [0,3,6,9]
+vals = lambda tbl: [f"{float(tbl.values[0][j]) / 100:.3f}" for j in selected_indices]
 
+print(row_name_wt_cov.format(),  " & ".join(vals(wt_table_cov))   + " \\\\")
+print(row_name_avg_cov.format(), " & ".join(vals(avg_table_cov))  + " \\\\")
+print(row_name_wt_omic.format(), " & ".join(vals(wt_table_omic))  + " \\\\")
+print(row_name_avg_omic.format()," & ".join(vals(avg_table_omic)) + " \\\\")
 
 
 # # make name uppercase
